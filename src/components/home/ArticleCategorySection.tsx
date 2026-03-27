@@ -8,15 +8,28 @@ import { Article } from '@/types/models';
 import { getArticleUrl } from '@/lib/articleUrl';
 import { getCategoryTheme } from '@/config/categoryThemes';
 
-const categories = [
-    { slug: 'emotional-regulation', label: 'Emotional Regulation' },
-    { slug: 'anxiety-stress', label: 'Anxiety & Stress' },
-];
+interface ArticleCategorySectionProps {
+    /** Category slug to fetch articles from */
+    categorySlug: string;
+    /** Section heading */
+    heading: string;
+    /** Section subtitle */
+    subtitle: string;
+    /** Background variant */
+    bg?: 'white' | 'light';
+    /** Hover accent color class for article titles */
+    hoverClass?: string;
+}
 
-const ContentPreview: React.FC = () => {
+const ArticleCategorySection: React.FC<ArticleCategorySectionProps> = ({
+    categorySlug,
+    heading,
+    subtitle,
+    bg = 'white',
+    hoverClass = 'group-hover:text-teal-600 dark:group-hover:text-teal-400',
+}) => {
     const navigate = useNavigate();
     const articleService = useArticleService();
-    const [activeCategory, setActiveCategory] = useState(categories[0].slug);
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
     const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
@@ -28,10 +41,10 @@ const ContentPreview: React.FC = () => {
     useEffect(() => {
         let cancelled = false;
 
-        articleService.getAll({ category: activeCategory })
+        articleService.getAll({ category: categorySlug })
             .then(data => {
                 if (!cancelled) {
-                    setArticles(data.slice(0, 12));
+                    setArticles(data.slice(0, 6));
                     setLoading(false);
                 }
             })
@@ -43,16 +56,14 @@ const ContentPreview: React.FC = () => {
             });
 
         return () => { cancelled = true; };
-    }, [articleService, activeCategory]);
+    }, [articleService, categorySlug]);
 
-    // Reset loading when category changes
-    const handleCategoryChange = (slug: string) => {
-        setLoading(true);
-        setActiveCategory(slug);
-    };
+    const bgClass = bg === 'light'
+        ? 'bg-slate-50 dark:bg-slate-900/50'
+        : 'bg-white dark:bg-slate-950';
 
     return (
-        <section className="py-16 sm:py-20 lg:py-28 px-6 bg-white dark:bg-slate-950">
+        <section className={`py-16 sm:py-20 lg:py-24 px-6 ${bgClass}`}>
             <div className="container mx-auto max-w-6xl">
 
                 {/* Header */}
@@ -61,14 +72,14 @@ const ContentPreview: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12"
+                    className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10"
                 >
                     <div>
                         <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
-                            Understand Your Mind
+                            {heading}
                         </h2>
                         <p className="text-lg text-slate-600 dark:text-slate-400 max-w-lg">
-                            Evidence-based guides on emotional regulation and anxiety management — helping you recognize patterns and build resilience.
+                            {subtitle}
                         </p>
                     </div>
                     <Button
@@ -77,45 +88,22 @@ const ContentPreview: React.FC = () => {
                         onClick={() => navigate('/learn')}
                         className="shrink-0 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
                     >
-                        Browse All Topics
+                        Browse All
                     </Button>
                 </motion.div>
 
-                {/* Category Tabs */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="flex flex-wrap gap-2 mb-10"
-                >
-                    {categories.map((cat) => (
-                        <button
-                            key={cat.slug}
-                            onClick={() => handleCategoryChange(cat.slug)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                                activeCategory === cat.slug
-                                    ? 'bg-teal-600 text-white shadow-sm'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                            }`}
-                        >
-                            {cat.label}
-                        </button>
-                    ))}
-                </motion.div>
-
-                {/* Articles Grid */}
+                {/* Articles Grid — 3 columns, 2 rows max */}
                 <AnimatePresence mode="wait">
                     <motion.div
-                        key={activeCategory}
+                        key={categorySlug}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3 }}
                     >
                         {loading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[1, 2, 3, 4, 5, 6].map(i => (
                                     <div key={i} className="animate-pulse">
                                         <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4" />
                                         <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-3/4 mb-2" />
@@ -124,7 +112,7 @@ const ContentPreview: React.FC = () => {
                                 ))}
                             </div>
                         ) : articles.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {articles.map((article) => {
                                     const theme = getCategoryTheme(article.category?.slug);
                                     const FallbackIcon = theme.icon;
@@ -156,7 +144,7 @@ const ContentPreview: React.FC = () => {
                                                     {article.readTime ? `${article.readTime} min read` : 'Article'}
                                                 </span>
                                             </div>
-                                            <h3 className="font-display font-bold text-slate-900 dark:text-white leading-snug group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors line-clamp-2">
+                                            <h3 className={`font-display font-bold text-slate-900 dark:text-white leading-snug transition-colors line-clamp-2 ${hoverClass}`}>
                                                 {article.title}
                                             </h3>
                                         </div>
@@ -175,4 +163,4 @@ const ContentPreview: React.FC = () => {
     );
 };
 
-export default ContentPreview;
+export default ArticleCategorySection;
