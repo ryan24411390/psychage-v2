@@ -1,3 +1,8 @@
+-- ARCHIVED 2026-04-16: This migration is part of an RLS-fix iteration superseded by
+-- 20260316000009_disable_remaining_article_rls.sql (final state: RLS disabled).
+-- See CLEANUP_AUDIT.md L12 for context. The file remains in place because it has
+-- run on production. Do not edit; the migration ledger is append-only.
+
 -- ============================================================
 -- Simplify article RLS — nuclear cleanup
 -- ============================================================
