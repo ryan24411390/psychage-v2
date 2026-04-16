@@ -1,5 +1,11 @@
 # P1 - High Priority Fixes
 
+> **⚠️ Partially superseded by cleanup 2026-04-16.**
+> Tasks in this document referencing the following removed items are no longer applicable:
+> `ProviderDashboard`, `ProviderProfileEditor`, `ProviderAnalytics`, `ProviderPatients`.
+> The provider dashboard v1 surface was removed because the live provider directory
+> uses `pages/providers/*` (kept) instead. See `CLEANUP_EXECUTION.md` for the active state.
+
 These issues are required for MVP launch. They include incomplete features and missing polish.
 
 ---
