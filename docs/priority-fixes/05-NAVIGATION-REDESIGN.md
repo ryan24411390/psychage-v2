@@ -1,5 +1,12 @@
 # Navigation Redesign Implementation Plan
 
+> **⚠️ Partially superseded by cleanup 2026-04-16.**
+> Sections of this document reference the following removed items and are no longer applicable:
+> `ProviderDashboard`, `ProviderProfileEditor`, `ProviderAnalytics`, `ProviderPatients`,
+> `ProviderSidebar`, `ProviderDetailAdmin`, `AuditLogPage`, `ReportsPage`, `AdminAnalyticsPage`,
+> plus the `/admin/reports` and `/admin/analytics` routes. The provider directory now lives
+> under `pages/providers/*` (live, kept). See `CLEANUP_EXECUTION.md` for the active state.
+
 **Status**: Ready for Implementation
 **Estimated Effort**: 3-4 days
 **Dependencies**: None (can start immediately)
