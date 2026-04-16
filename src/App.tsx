@@ -91,12 +91,6 @@ const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
 // Admin redirect — admin panel lives on a separate domain (admin.psychage.com)
 // In local dev (no VITE_ADMIN_URL), redirects to /admin.html entry point
 
-// Provider Dashboard (legacy — redirects to /portal/*)
-const ProviderDashboard = React.lazy(() => import('./pages/provider/ProviderDashboard'));
-const ProviderProfileEditor = React.lazy(() => import('./pages/provider/ProviderProfileEditor'));
-const ProviderAnalytics = React.lazy(() => import('./pages/provider/ProviderAnalytics'));
-const ProviderPatients = React.lazy(() => import('./pages/provider/ProviderPatients'));
-
 // Provider Portal V2
 const PortalLayout = React.lazy(() => import('./components/portal/PortalLayout'));
 const PortalDashboard = React.lazy(() => import('./pages/portal/PortalDashboard'));
