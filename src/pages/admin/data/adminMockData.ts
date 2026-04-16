@@ -82,7 +82,7 @@ export async function getMockUrgentItems(): Promise<UrgentItem[]> {
       description: 'Users flagged potentially inaccurate health information',
       priority: 'urgent',
       createdAt: subHours(new Date(), 1).toISOString(),
-      actionUrl: '/admin/reports',
+      actionUrl: '/admin/articles',
     },
     {
       id: 'urg-3',
@@ -91,7 +91,7 @@ export async function getMockUrgentItems(): Promise<UrgentItem[]> {
       description: 'Week-over-week decrease in Clarity Score completions',
       priority: 'normal',
       createdAt: subHours(new Date(), 12).toISOString(),
-      actionUrl: '/admin/analytics',
+      actionUrl: '/admin/dashboard',
     },
   ];
 }
