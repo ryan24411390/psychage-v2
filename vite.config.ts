@@ -75,11 +75,8 @@ export default defineConfig(() => {
 
             // --- Only split non-React-dependent heavy libraries ---
             // React-dependent libs (framer-motion, lucide, radix, recharts, react-i18next,
-            // react-router, react-three, tiptap-react) MUST stay in the default chunk
-            // with React to avoid createContext/forwardRef init-time failures.
-
-            // 3D engine (no top-level React calls — Three.js core is pure JS)
-            if (id.includes('/three/src/') || id.includes('/three/build/')) return 'vendor-three';
+            // react-router, tiptap-react) MUST stay in the default chunk with React to
+            // avoid createContext/forwardRef init-time failures.
 
             // Prosemirror (pure JS, no React dependency)
             if (id.includes('/prosemirror-')) return 'vendor-editor';
