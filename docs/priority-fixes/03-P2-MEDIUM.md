@@ -1,5 +1,11 @@
 # P2 - Medium Priority Fixes
 
+> **⚠️ Partially superseded by cleanup 2026-04-16.**
+> Tasks in this document referencing the following removed items are no longer applicable:
+> `AuditLogPage`, `ReportsPage`, `ProviderProfileEditor`. Also note: `activityService.ts`
+> and `waitlistService.ts` were removed (zero importers); their tests were deleted as orphans.
+> See `CLEANUP_EXECUTION.md` for the active state.
+
 These issues are important for quality and maintainability. They should be addressed after MVP launch.
 
 ---
