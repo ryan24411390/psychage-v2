@@ -13,19 +13,13 @@ interface ImportMetaEnv {
   readonly VITE_SANITY_DATASET: string;
   readonly VITE_SANITY_API_VERSION: string;
 
-  // Application Metadata
-  readonly VITE_APP_NAME: string;
-  readonly VITE_APP_VERSION: string;
-
   // Feature Flags
   readonly VITE_ENABLE_AI_CHAT: string;
   readonly VITE_ENABLE_PROVIDER_DIRECTORY: string;
   readonly VITE_ENABLE_MOOD_JOURNAL: string;
   readonly VITE_ENABLE_SLEEP_TRACKER: string;
   readonly VITE_ENABLE_CLARITY_SCORE: string;
-
-  // Development Settings
-  readonly VITE_DEBUG_MODE: string;
+  readonly VITE_ENABLE_MEDICATION_TRACKER: string;
 }
 
 interface ImportMeta {
