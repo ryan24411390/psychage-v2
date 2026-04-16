@@ -1,5 +1,13 @@
 # Psychage V2 - Priority Fix Plan
 
+> **⚠️ Partially superseded by cleanup 2026-04-16.**
+> Tasks in this document referencing the following removed items are no longer applicable:
+> `ProviderDashboard`, `ProviderProfileEditor`, `ProviderAnalytics`, `ProviderPatients`, `ProviderSidebar`,
+> `AuditLogPage`, `ReportsPage`, `AdminAnalyticsPage`, `AdminContentPage`, `AdminSettingsPage`,
+> `UserManagementPage`, `ProviderManagement`, `ReportDetailPage`, `ProviderDetailAdmin`,
+> `AdminUserDetailPage`, `SymptomCheckerPage`, `ProviderOnboarding`, `ReviewCard`, `ProviderQuickMatch`,
+> `CategoryCard`, `TierGuard`, `AnalyticsChart`, `ToolsSection`. See `CLEANUP_EXECUTION.md` at the repo root for the active state.
+
 ## Project Status: ~98% Complete
 
 This document outlines the prioritized tasks needed to bring Psychage V2 to production-ready status. Each priority level has its own detailed file with specific prompts you can use.
