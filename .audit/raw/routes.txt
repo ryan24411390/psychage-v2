@@ -1,0 +1,113 @@
+src/AdminApp.tsx:100:              <Route path="articles" element={<AdminArticleList />} />
+src/AdminApp.tsx:101:              <Route path="articles/new" element={<AdminArticleCreator />} />
+src/AdminApp.tsx:102:              <Route path="articles/categories" element={<AdminArticleCategories />} />
+src/AdminApp.tsx:103:              <Route path="articles/pipeline" element={<AdminArticlePipeline />} />
+src/AdminApp.tsx:104:              <Route path="articles/tree" element={<AdminArticleTree />} />
+src/AdminApp.tsx:105:              <Route path="articles/quality" element={<AdminArticleQualityMap />} />
+src/AdminApp.tsx:106:              <Route path="articles/citations" element={<AdminArticleCitationReport />} />
+src/AdminApp.tsx:107:              <Route path="articles/quality-dashboard" element={<AdminArticleQualityDashboard />} />
+src/AdminApp.tsx:108:              <Route path="articles/clusters" element={<AdminTopicClusters />} />
+src/AdminApp.tsx:109:              <Route path="articles/:id" element={<AdminArticleDetail />} />
+src/AdminApp.tsx:110:              <Route path="articles/:id/breakdown" element={<AdminArticleBreakdown />} />
+src/AdminApp.tsx:112:              <Route path="content" element={<AdminContentList />} />
+src/AdminApp.tsx:113:              <Route path="content/new" element={<AdminContentEditor />} />
+src/AdminApp.tsx:114:              <Route path="content/:id/edit" element={<AdminContentEditor />} />
+src/AdminApp.tsx:116:              <Route path="providers" element={<AdminProviderList />} />
+src/AdminApp.tsx:117:              <Route path="providers/new" element={<AdminProviderEditor />} />
+src/AdminApp.tsx:118:              <Route path="providers/applications" element={<AdminApplicationReview />} />
+src/AdminApp.tsx:119:              <Route path="providers/import" element={<AdminBulkImport />} />
+src/AdminApp.tsx:120:              <Route path="providers/:id/edit" element={<AdminProviderEditor />} />
+src/AdminApp.tsx:122:              <Route path="symptom-navigator" element={<Navigate to="/symptom-navigator/symptoms" replace />} />
+src/AdminApp.tsx:123:              <Route path="symptom-navigator/symptoms" element={<AdminSymptomList />} />
+src/AdminApp.tsx:124:              <Route path="symptom-navigator/conditions" element={<AdminConditionList />} />
+src/AdminApp.tsx:125:              <Route path="symptom-navigator/conditions/:id/edit" element={<AdminConditionEditor />} />
+src/AdminApp.tsx:126:              <Route path="symptom-navigator/mappings" element={<AdminMappingMatrix />} />
+src/AdminApp.tsx:128:              <Route path="safety" element={<AdminSafetyDashboard />} />
+src/AdminApp.tsx:129:              <Route path="safety/keywords" element={<AdminCrisisKeywords />} />
+src/AdminApp.tsx:130:              <Route path="safety/conversations" element={<AdminConversationReview />} />
+src/AdminApp.tsx:132:              <Route path="settings" element={<AdminSettingsV2 />} />
+src/AdminApp.tsx:133:              <Route path="settings/users" element={<AdminUserManagementV2 />} />
+src/AdminApp.tsx:134:              <Route path="settings/audit-log" element={<AdminAuditLogV2 />} />
+src/AdminApp.tsx:138:            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+src/AdminApp.tsx:75:            <Route path="/login" element={<LoginPage variant="admin" />} />
+src/AdminApp.tsx:76:            <Route path="/auth/callback" element={<AuthCallback />} />
+src/AdminApp.tsx:77:            <Route path="/reset-password" element={<ResetPasswordPage />} />
+src/AdminApp.tsx:78:            <Route path="/update-password" element={<UpdatePasswordPage />} />
+src/AdminApp.tsx:81:            <Route path="/onboarding" element={
+src/AdminApp.tsx:90:            <Route path="/" element={
+src/AdminApp.tsx:98:              <Route path="dashboard" element={<AdminDashboardV2 />} />
+src/App.tsx:221:                                            <Route path="/" element={
+src/App.tsx:228:                                            <Route path="/learn" element={<PageTransition><RouteErrorBoundary><LearnPage /></RouteErrorBoundary></PageTransition>} />
+src/App.tsx:229:                                            <Route path="/learn/article/:id" element={<PageTransition><ArticleRedirect /></PageTransition>} />
+src/App.tsx:230:                                            <Route path="/learn/:categorySlug/:articleSlug" element={<PageTransition><ArticlePage /></PageTransition>} />
+src/App.tsx:231:                                            <Route path="/learn/:categorySlug" element={<PageTransition><ArticleCategoryPage /></PageTransition>} />
+src/App.tsx:232:                                            <Route path="/watch/:id" element={<PageTransition><VideoDetail /></PageTransition>} />
+src/App.tsx:234:                                            <Route path="/providers" element={<PageTransition><ProvidersLandingPage /></PageTransition>} />
+src/App.tsx:235:                                            <Route path="/providers/search" element={<PageTransition><RouteErrorBoundary><ProviderSearchPage /></RouteErrorBoundary></PageTransition>} />
+src/App.tsx:236:                                            <Route path="/providers/:id" element={<PageTransition><ProviderProfilePage /></PageTransition>} />
+src/App.tsx:237:                                            <Route path="/for-providers" element={<PageTransition><ForProvidersLandingPage /></PageTransition>} />
+src/App.tsx:238:                                            <Route path="/for-providers/apply" element={<PageTransition><ProviderApplyPage /></PageTransition>} />
+src/App.tsx:239:                                            <Route path="/for-providers/claim" element={<PageTransition><ProviderClaimPage /></PageTransition>} />
+src/App.tsx:242:                                            <Route path="/find-care" element={<Navigate to="/providers" replace />} />
+src/App.tsx:243:                                            <Route path="/find-care/provider/:id" element={<Navigate to="/providers" replace />} />
+src/App.tsx:244:                                            <Route path="/tools" element={<PageTransition><RouteErrorBoundary><ToolsPage /></RouteErrorBoundary></PageTransition>} />
+src/App.tsx:245:                                            <Route path="/tools/mood-journal" element={<PageTransition><MoodJournal /></PageTransition>} />
+src/App.tsx:246:                                            <Route path="/tools/sleep-architect" element={<PageTransition><SleepArchitect /></PageTransition>} />
+src/App.tsx:247:                                            <Route path="/tools/mindmate" element={
+src/App.tsx:252:                                            <Route path="/tools/symptom-navigator" element={<PageTransition><NavigatorPage /></PageTransition>} />
+src/App.tsx:253:                                            <Route path="/tools/symptom-navigator/crisis" element={<PageTransition><CrisisResourcesScreen /></PageTransition>} />
+src/App.tsx:254:                                            <Route path="/tools/relationship-health" element={<PageTransition><RelationshipHealthCheck /></PageTransition>} />
+src/App.tsx:255:                                            <Route path="/tools/medication-tracker" element={<PageTransition><MedicationTracker /></PageTransition>} />
+src/App.tsx:256:                                            <Route path="/tools/clarity-journal" element={<PageTransition><ClarityJournal /></PageTransition>} />
+src/App.tsx:257:                                            <Route path="/tools/clarity-journal/daily" element={<PageTransition><ClarityJournalDailyCheckIn /></PageTransition>} />
+src/App.tsx:258:                                            <Route path="/tools/clarity-journal/screening" element={<PageTransition><ClarityJournalWeeklyScreening /></PageTransition>} />
+src/App.tsx:259:                                            <Route path="/tools/clarity-journal/thought-record" element={<PageTransition><ClarityJournalThoughtRecord /></PageTransition>} />
+src/App.tsx:260:                                            <Route path="/tools/clarity-journal/activation" element={<PageTransition><ClarityJournalBehavioralActivation /></PageTransition>} />
+src/App.tsx:261:                                            <Route path="/tools/clarity-journal/triggers" element={<PageTransition><ClarityJournalTriggerLog /></PageTransition>} />
+src/App.tsx:262:                                            <Route path="/tools/clarity-journal/toolbox" element={<PageTransition><ClarityJournalWellnessToolbox /></PageTransition>} />
+src/App.tsx:263:                                            <Route path="/tools/clarity-journal/reflection" element={<PageTransition><ClarityJournalWeeklyReflection /></PageTransition>} />
+src/App.tsx:264:                                            <Route path="/tools/clarity-journal/history" element={<PageTransition><ClarityJournalHistory /></PageTransition>} />
+src/App.tsx:265:                                            <Route path="/tools/clarity-journal/insights" element={<PageTransition><ClarityJournalInsights /></PageTransition>} />
+src/App.tsx:266:                                            <Route path="/tools/clarity-journal/entry" element={<PageTransition><ClarityJournalDailyEntry /></PageTransition>} />
+src/App.tsx:267:                                            <Route path="/tools/clarity-journal/report" element={<PageTransition><ClarityJournalReport /></PageTransition>} />
+src/App.tsx:268:                                            <Route path="/category/:category" element={<PageTransition><CategoryPage /></PageTransition>} />
+src/App.tsx:269:                                            <Route path="/search" element={<PageTransition><SearchResults /></PageTransition>} />
+src/App.tsx:270:                                            <Route path="/clarity-score" element={<PageTransition><RouteErrorBoundary><ClarityScoreTool /></RouteErrorBoundary></PageTransition>} />
+src/App.tsx:271:                                            <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+src/App.tsx:272:                                            <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+src/App.tsx:273:                                            <Route path="/content-standards" element={<PageTransition><ContentStandardsPage /></PageTransition>} />
+src/App.tsx:274:                                            <Route path="/advisory-board" element={<PageTransition><AdvisoryBoardPage /></PageTransition>} />
+src/App.tsx:275:                                            <Route path="/authors/:slug" element={<PageTransition><AuthorProfilePage /></PageTransition>} />
+src/App.tsx:276:                                            <Route path="/legal/privacy" element={<PageTransition><LegalPage type="privacy" /></PageTransition>} />
+src/App.tsx:277:                                            <Route path="/legal/terms" element={<PageTransition><LegalPage type="terms" /></PageTransition>} />
+src/App.tsx:278:                                            <Route path="/crisis" element={<PageTransition><CrisisPage /></PageTransition>} />
+src/App.tsx:279:                                            <Route path="/sitemap" element={<PageTransition><SitemapPage /></PageTransition>} />
+src/App.tsx:281:                                            <Route path="/navigator" element={<Navigate to="/tools/symptom-navigator" replace />} />
+src/App.tsx:282:                                            <Route path="/navigator/crisis" element={<Navigate to="/tools/symptom-navigator/crisis" replace />} />
+src/App.tsx:283:                                            <Route path="/providers/register" element={<Navigate to="/for-providers/apply" replace />} />
+src/App.tsx:286:                                            <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+src/App.tsx:287:                                            <Route path="/signup" element={<PageTransition><SignUpPage /></PageTransition>} />
+src/App.tsx:288:                                            <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
+src/App.tsx:289:                                            <Route path="/update-password" element={<PageTransition><UpdatePasswordPage /></PageTransition>} />
+src/App.tsx:290:                                            <Route path="/auth/callback" element={<AuthCallback />} />
+src/App.tsx:293:                                            <Route path="/onboarding" element={
+src/App.tsx:300:                                            <Route path="/dashboard" element={
+src/App.tsx:307:                                            <Route path="/dashboard/profile" element={<Navigate to="/dashboard/settings" replace />} />
+src/App.tsx:308:                                            <Route path="/dashboard/settings" element={
+src/App.tsx:315:                                            <Route path="/dashboard/bookmarks" element={
+src/App.tsx:322:                                            <Route path="/dashboard/privacy" element={
+src/App.tsx:329:                                            <Route path="/dashboard/assessments" element={<Navigate to="/dashboard/history" replace />} />
+src/App.tsx:330:                                            <Route path="/dashboard/history" element={
+src/App.tsx:339:                                            <Route path="/admin/*" element={<AdminRedirect />} />
+src/App.tsx:342:                                            <Route path="/portal" element={
+src/App.tsx:350:                                                <Route path="profile" element={<PortalProfile />} />
+src/App.tsx:351:                                                <Route path="reviews" element={<PortalReviews />} />
+src/App.tsx:352:                                                <Route path="verification" element={<PortalVerification />} />
+src/App.tsx:353:                                                <Route path="subscription" element={<PortalSubscription />} />
+src/App.tsx:354:                                                <Route path="analytics" element={<PortalAnalytics />} />
+src/App.tsx:355:                                                <Route path="settings" element={<PortalSettings />} />
+src/App.tsx:359:                                            <Route path="/provider" element={<Navigate to="/portal" replace />} />
+src/App.tsx:360:                                            <Route path="/provider/profile" element={<Navigate to="/portal/profile" replace />} />
+src/App.tsx:361:                                            <Route path="/provider/analytics" element={<Navigate to="/portal/analytics" replace />} />
+src/App.tsx:362:                                            <Route path="/provider/patients" element={<Navigate to="/portal" replace />} />
+src/App.tsx:364:                                            <Route path="*" element={

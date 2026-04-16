@@ -1,0 +1,14 @@
+- Finding files
+Processed 1317 files (8.2s) (269 warnings)
+
+✖ Found 8 circular dependencies!
+
+1) components/tools/MoodWizard/MoodWizard.tsx > components/tools/MoodWizard/StepEmotions.tsx
+2) components/tools/MoodWizard/MoodWizard.tsx > components/tools/MoodWizard/StepImpact.tsx
+3) components/tools/MoodWizard/MoodWizard.tsx > components/tools/MoodWizard/StepReview.tsx
+4) components/tools/MoodWizard/MoodWizard.tsx > components/tools/MoodWizard/StepReview.tsx > components/tools/MoodWizard/StepValence.tsx
+5) components/tools/MoodWizard/MoodWizard.tsx > components/tools/MoodWizard/storage.ts
+6) components/admin/editor/extensions/CalloutBlock.ts > components/admin/editor/node-views/CalloutBlockView.tsx
+7) components/admin/editor/extensions/ChartBlock.ts > components/admin/editor/node-views/ChartBlockView.tsx
+8) components/admin/editor/extensions/ChartBlock.ts > components/admin/editor/node-views/ChartBlockView.tsx > components/admin/editor/node-views/ChartDataEditor.tsx
+

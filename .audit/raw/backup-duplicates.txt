@@ -1,0 +1,17 @@
+./clarity-score/postcss.config 2.mjs
+./clarity-score/next.config 2.ts
+./clarity-score/public/vercel 2.svg
+./.rewrite/find-session 2.js
+./.moat/moat-tasks 2.md
+./.moat/moat-tasks.md 2.crswap
+./.claude/worktrees/nervous-yonath/clarity-score/postcss.config 2.mjs
+./.claude/worktrees/nervous-yonath/clarity-score/next.config 2.ts
+./.claude/worktrees/nervous-yonath/clarity-score/public/vercel 2.svg
+./.claude/worktrees/nervous-yonath/vitest.config 2.ts
+./.claude/worktrees/nervous-yonath/src/tests/setup 2.ts
+./.claude/worktrees/nervous-yonath/src/lib/highlightText 2.ts
+./.claude/worktrees/nervous-yonath/src/data/articles/PROGRESS.md.bak
+./vitest.config 2.ts
+./src/tests/setup 2.ts
+./src/lib/highlightText 2.ts
+./src/data/articles/PROGRESS.md.bak
