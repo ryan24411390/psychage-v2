@@ -9,7 +9,7 @@ import { tools } from '@/data/tools';
  * This prevents production issues where tools appear but link to '#'.
  */
 
-// This should match the getToolLink function in ToolsPage.tsx and ToolsSection.tsx
+// This should match the getToolLink function in ToolsPage.tsx
 const ROUTE_MAP: Record<number, string> = {
   1: '/clarity-score',
   2: '/tools/mood-journal',
