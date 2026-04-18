@@ -14,6 +14,7 @@ import {
     Activity,
     Compass,
     ArrowRight,
+    RotateCcw,
 } from 'lucide-react';
 import { CrisisResourceCard } from '../navigator/CrisisResourceCard';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
@@ -228,6 +229,10 @@ export const ResultsScreen: React.FC = () => {
                 <p className="text-base text-text-secondary max-w-2xl leading-relaxed">
                     Based on the {symptomCount} symptom{symptomCount !== 1 ? 's' : ''} you reported, here is what we found. This is an educational overview — not a diagnosis.
                 </p>
+                <NavigatorButton variant="outline" onClick={handleResetClick} className="mt-4">
+                    <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+                    Start New Assessment
+                </NavigatorButton>
             </header>
 
             {/* ─── Crisis Banner (always top-priority) ─── */}

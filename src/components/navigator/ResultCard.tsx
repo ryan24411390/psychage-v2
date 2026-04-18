@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown, BookOpen, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { NavigatorResultItem } from '../../lib/navigator/types';
 import { RelevanceDots } from './RelevanceDots';
@@ -74,6 +75,32 @@ export const ResultCard: React.FC<ResultCardProps> = ({ result, onClick }) => {
                 <p className="text-text-secondary leading-relaxed font-sans pb-1 max-w-3xl">
                     {result.description_for_user}
                 </p>
+
+                {/* Article cross-links */}
+                {(result.guide_path || result.coping_path) && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                        {result.guide_path && (
+                            <Link
+                                to={result.guide_path}
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 text-xs font-medium text-teal-500 hover:text-teal-400 transition-colors px-2.5 py-1.5 rounded-md bg-teal-500/10 border border-teal-500/20 hover:border-teal-500/30"
+                            >
+                                <BookOpen className="w-3 h-3" />
+                                Learn More
+                            </Link>
+                        )}
+                        {result.coping_path && (
+                            <Link
+                                to={result.coping_path}
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1.5 text-xs font-medium text-teal-500 hover:text-teal-400 transition-colors px-2.5 py-1.5 rounded-md bg-teal-500/10 border border-teal-500/20 hover:border-teal-500/30"
+                            >
+                                <Heart className="w-3 h-3" />
+                                Coping Strategies
+                            </Link>
+                        )}
+                    </div>
+                )}
 
                 {/* Matched Symptoms Preview/List */}
                 {result.matched_symptoms.length > 0 && (
