@@ -85,7 +85,7 @@ const SignUpPage = () => {
 
                 navigate('/login', {
                     state: {
-                        message: `Account created successfully! Please log in as a ${userType}.`,
+                        message: `Account created. Please check your email for a confirmation link, then sign in. If you don't see it, check your spam folder.`,
                         email: formData.email
                     }
                 });

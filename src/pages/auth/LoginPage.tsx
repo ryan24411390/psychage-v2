@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, AlertCircle, ArrowRight, CheckCircle2, Eye, EyeOff, Send } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -30,6 +30,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ variant = 'main' }) => {
     const [oauthLoading, setOauthLoading] = useState<'google' | 'apple' | null>(null);
     const [infoMessage, setInfoMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isEmailNotConfirmed, setIsEmailNotConfirmed] = useState(false);
+    const [resendLoading, setResendLoading] = useState(false);
+    const [resendSent, setResendSent] = useState(false);
     const isDev = import.meta.env.DEV;
 
     // Get the page they were trying to visit, or default to appropriate dashboard
@@ -174,6 +177,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ variant = 'main' }) => {
 
                 if (lowerError.includes('email not confirmed') || lowerError.includes('not confirmed')) {
                     setError('Your email address has not been confirmed. Please check your inbox for a confirmation link.');
+                    setIsEmailNotConfirmed(true);
+                    setResendSent(false);
                 } else if (lowerError.includes('invalid') || lowerError.includes('credentials') || lowerError.includes('password')) {
                     setError('Invalid email or password. Please check your credentials and try again.');
                 } else if (lowerError.includes('not found') || lowerError.includes('no user') || lowerError.includes('does not exist')) {
@@ -265,7 +270,35 @@ const LoginPage: React.FC<LoginPageProps> = ({ variant = 'main' }) => {
                         {error && (
                             <Alert variant="destructive" className="animate-in slide-in-from-top-2">
                                 <AlertCircle className="h-4 w-4" />
-                                <AlertDescription>{error}</AlertDescription>
+                                <AlertDescription>
+                                    {error}
+                                    {isEmailNotConfirmed && !resendSent && (
+                                        <button
+                                            type="button"
+                                            disabled={resendLoading}
+                                            onClick={async () => {
+                                                setResendLoading(true);
+                                                try {
+                                                    await supabase.auth.resend({ type: 'signup', email });
+                                                    setResendSent(true);
+                                                    setError('Confirmation email sent. Please check your inbox and spam folder.');
+                                                    setIsEmailNotConfirmed(false);
+                                                } catch {
+                                                    setError('Unable to resend confirmation. Please try again later.');
+                                                } finally {
+                                                    setResendLoading(false);
+                                                }
+                                            }}
+                                            className="mt-2 flex items-center gap-1.5 text-xs font-bold underline hover:no-underline"
+                                        >
+                                            <Send size={12} />
+                                            {resendLoading ? 'Sending...' : 'Resend confirmation email'}
+                                        </button>
+                                    )}
+                                    {resendSent && (
+                                        <p className="mt-2 text-xs font-medium text-emerald-400">Confirmation email sent. Check your inbox and spam folder.</p>
+                                    )}
+                                </AlertDescription>
                             </Alert>
                         )}
 

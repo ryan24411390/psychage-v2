@@ -1,6 +1,6 @@
- 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthContext';
 import { GlobalLoading } from '../ui/Skeletons';
 import { adminUrl, mainUrl, isInAdminApp } from '@/lib/urls';
@@ -16,6 +16,17 @@ const RoleGuard: React.FC<RoleGuardProps> = ({ children, allowedRoles }) => {
     const { user, isAuthenticated, isLoading } = useAuth();
     const location = useLocation();
     const onAdminDomain = isInAdminApp();
+    const toastFired = useRef(false);
+
+    // Determine if role mismatch exists so we can show a toast
+    const roleMismatch = isAuthenticated && user && !allowedRoles.includes(user.role);
+
+    useEffect(() => {
+        if (roleMismatch && !toastFired.current) {
+            toastFired.current = true;
+            toast.info("You've been redirected to your dashboard.");
+        }
+    }, [roleMismatch]);
 
     if (isLoading) {
         return <GlobalLoading />;
