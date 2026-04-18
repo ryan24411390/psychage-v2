@@ -14,6 +14,7 @@ interface SyncBannerProps {
   syncStatus: SyncStatus;
   syncedCount: number;
   onSignIn: () => void;
+  onRetry?: () => void;
 }
 
 const DISMISS_KEY = 'psychage_sleep_sync_banner_dismissed';
@@ -24,6 +25,7 @@ const SyncBanner: React.FC<SyncBannerProps> = ({
   syncStatus,
   syncedCount,
   onSignIn,
+  onRetry,
 }) => {
   const [dismissed, setDismissed] = useState(() => {
     try {
@@ -79,10 +81,19 @@ const SyncBanner: React.FC<SyncBannerProps> = ({
     if (syncStatus === 'error') {
       return (
         <div className="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded-xl px-4 py-2.5 text-xs">
-          <WifiOff size={14} className="text-amber-500" />
-          <span className="text-amber-700 dark:text-amber-300 font-medium">
+          <WifiOff size={14} className="text-amber-500 flex-shrink-0" />
+          <span className="text-amber-700 dark:text-amber-300 font-medium flex-1">
             Sync temporarily unavailable. Your data is saved locally.
           </span>
+          {onRetry && (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="text-amber-600 dark:text-amber-400 font-bold hover:underline flex-shrink-0"
+            >
+              Try again
+            </button>
+          )}
         </div>
       );
     }

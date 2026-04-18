@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { AlertTriangle, Phone, ChevronRight } from 'lucide-react';
+import { AlertTriangle, Phone, ChevronRight, RefreshCw } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { assessmentService } from '@/services/assessmentService';
 import { Question } from '@/types/models';
@@ -17,22 +17,27 @@ const AssessmentPage: React.FC = () => {
     const navigate = useNavigate();
     const [questions, setQuestions] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [fetchError, setFetchError] = useState<string | null>(null);
     const [step, setStep] = useState<'intro' | 'questions' | 'calculating'>('intro');
 
     // Load questions
-    useEffect(() => {
-        const fetchQuestions = async () => {
-            try {
-                const data = await assessmentService.getQuestions();
-                setQuestions(data);
-            } catch (error) {
-                console.error("Failed to fetch questions:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchQuestions();
+    const fetchQuestions = useCallback(async () => {
+        setIsLoading(true);
+        setFetchError(null);
+        try {
+            const data = await assessmentService.getQuestions();
+            setQuestions(data);
+        } catch (error) {
+            console.error("Failed to fetch questions:", error);
+            setFetchError('Unable to load the assessment. Please check your connection and try again.');
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
+
+    useEffect(() => {
+        fetchQuestions();
+    }, [fetchQuestions]);
 
     // State for assessment
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -98,6 +103,26 @@ const AssessmentPage: React.FC = () => {
     };
 
     if (isLoading) return <div className="min-h-screen bg-background pt-32 text-center text-text-primary">Loading assessment...</div>;
+
+    if (fetchError) return (
+        <div className="min-h-screen bg-background pt-24 pb-12 px-6">
+            <div className="max-w-md mx-auto text-center py-20">
+                <div className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-6">
+                    <AlertTriangle className="w-8 h-8 text-amber-500" />
+                </div>
+                <h2 className="font-display font-bold text-2xl text-text-primary mb-3">Something went wrong</h2>
+                <p className="text-text-secondary mb-8">{fetchError}</p>
+                <div className="flex flex-col gap-3 max-w-xs mx-auto">
+                    <Button onClick={fetchQuestions} rightIcon={<RefreshCw size={16} />}>
+                        Try Again
+                    </Button>
+                    <button onClick={() => navigate('/tools')} className="text-text-tertiary text-sm hover:text-text-primary">
+                        Back to Tools
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 
     const progress = Math.round(((currentQuestionIndex) / questions.length) * 100);
 
