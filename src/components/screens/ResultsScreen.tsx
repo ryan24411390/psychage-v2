@@ -185,9 +185,11 @@ export const ResultsScreen: React.FC = () => {
             id: 'ns3',
             type: 'selfcare',
             title: 'Explore Self-Care Resources',
-            description: 'Our library includes guided exercises, educational content, and coping strategies tailored to different experiences.',
-            actionText: 'Browse Library',
-            onClick: () => navigate('/learn')
+            description: strongMatches.length > 0 && strongMatches[0].guide_path
+                ? `Learn more about ${strongMatches[0].name} with evidence-based articles and coping strategies.`
+                : 'Our library includes guided exercises, educational content, and coping strategies tailored to different experiences.',
+            actionText: strongMatches.length > 0 && strongMatches[0].guide_path ? 'Read About It' : 'Browse Library',
+            onClick: () => navigate(strongMatches.length > 0 && strongMatches[0].guide_path ? strongMatches[0].guide_path : '/learn')
         }
     ];
 
