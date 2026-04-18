@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BookOpen } from 'lucide-react';
+import EmptyState from '@/components/ui/EmptyState';
 import SEO from '@/components/SEO';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { useClarityJournal } from '../hooks/useClarityJournal';
@@ -122,7 +123,12 @@ const JournalHistory: React.FC = () => {
         </div>
 
         {entries.length === 0 ? (
-          <div className="text-center py-12 text-slate-400 text-sm">No entries yet.</div>
+          <EmptyState
+            icon={BookOpen}
+            title="No entries yet"
+            description="Start a daily check-in or weekly screening to build your journal history and track patterns over time."
+            action={{ label: 'Create Your First Entry', onClick: () => navigate('/tools/clarity-journal') }}
+          />
         ) : (
           <div className="space-y-3">
             {entries.map(entry => (

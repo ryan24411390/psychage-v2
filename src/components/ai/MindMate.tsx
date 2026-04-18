@@ -429,6 +429,27 @@ const MindMate: React.FC = () => {
                                     </div>
                                 </motion.div>
                             ))}
+                            {/* Starter prompts for first-time users */}
+                            {messages.length === 1 && messages[0].id === 'init' && !isTyping && (
+                                <div className="flex flex-wrap gap-2 pl-10">
+                                    {[
+                                        'What is anxiety and how can I manage it?',
+                                        'Help me understand my mood patterns',
+                                        'What should I look for in a therapist?',
+                                        'How can I improve my sleep?',
+                                    ].map((prompt) => (
+                                        <button
+                                            key={prompt}
+                                            type="button"
+                                            onClick={() => setInputText(prompt)}
+                                            className="text-xs px-3 py-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 transition-colors text-left"
+                                        >
+                                            {prompt}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
                             {isTyping && !messages.some(m => m.isStreaming && m.text) && (
                                 <div className="flex gap-3">
                                     <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
