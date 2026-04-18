@@ -415,6 +415,17 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           className="mb-8"
         />
 
+        {/* ── Article Cross-Link ──────────────────────────── */}
+        <div className="text-center mb-8">
+          <Link
+            to="/learn/relationships-communication"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Read about building healthy relationships
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+
         {/* ── Section 9: Action Buttons ──────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
