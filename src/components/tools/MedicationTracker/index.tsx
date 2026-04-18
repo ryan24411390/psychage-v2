@@ -20,6 +20,7 @@ import { ExportView } from './components/ExportView';
 import { nowISO } from './constants';
 import ToolRecommendation from '../shared/ToolRecommendation';
 import SEO from '@/components/SEO';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { Medication, DoseStatus } from './types';
 import { cn } from '@/lib/utils';
 
@@ -175,13 +176,13 @@ const MedicationTracker: React.FC = () => {
 
         {/* ── Header ────────────────────────────────────────────────── */}
         <div className="mb-10">
-          <button
-            onClick={() => navigate('/tools')}
-            className="flex items-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-semibold uppercase tracking-wider mb-6 transition-colors"
-          >
-            <ArrowLeft size={14} />
-            Back to Tools
-          </button>
+          <div className="mb-6">
+            <Breadcrumbs items={[
+              { label: 'Home', href: '/' },
+              { label: 'Tools', href: '/tools' },
+              { label: 'Medication Tracker' },
+            ]} />
+          </div>
 
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
