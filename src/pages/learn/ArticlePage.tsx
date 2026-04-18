@@ -19,6 +19,8 @@ import CrisisResourceBanner from '@/components/article/CrisisResourceBanner';
 import ShareButtons from '@/components/article/ShareButtons';
 import AccessibilityBar from '@/components/article/AccessibilityBar';
 import AuthModal from '@/components/auth/AuthModal';
+import { FindSupportCTA } from '@/components/providers/shared/FindSupportCTA';
+import { CATEGORY_TO_SPECIALTY } from '@/lib/article-category-to-specialty';
 
 import SEO from '@/components/SEO';
 import Button from '@/components/ui/Button';
@@ -485,7 +487,22 @@ const ArticlePage: React.FC = () => {
                                 <ArticleCard key={rel.id} article={rel} onClick={() => navigate(getArticleUrl(rel))} />
                             ))}
                         </div>
-                        <div className="text-center mt-8">
+
+                        {/* Continue Reading CTA */}
+                        <Link
+                            to={getArticleUrl(relatedArticles[0])}
+                            className="mt-8 flex items-center justify-between gap-4 p-5 rounded-xl bg-surface border border-border/50 hover:border-primary/40 hover:shadow-md transition-all group"
+                        >
+                            <div>
+                                <p className="text-xs font-semibold uppercase tracking-wider text-text-tertiary mb-1">Continue Reading</p>
+                                <p className="font-display font-bold text-text-primary group-hover:text-primary transition-colors">
+                                    {relatedArticles[0].title}
+                                </p>
+                            </div>
+                            <ArrowRight size={20} className="text-text-tertiary group-hover:text-primary transition-colors flex-shrink-0" />
+                        </Link>
+
+                        <div className="text-center mt-6">
                             <Link
                                 to={`/learn/${article.category.slug}`}
                                 className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
@@ -497,6 +514,15 @@ const ArticlePage: React.FC = () => {
                     </div>
                 </section>
             )}
+
+            {/* Find a Provider CTA */}
+            <section className="container mx-auto max-w-content px-6">
+                <FindSupportCTA
+                    specialtySlug={CATEGORY_TO_SPECIALTY[article.category.slug]}
+                    headline="Talk to a professional"
+                    description="If this topic resonates with you, a mental health professional can offer personalized guidance and support."
+                />
+            </section>
 
             {/* Crisis Resource Banner — Always visible, zero animation delay */}
             <section className="container mx-auto max-w-content px-6 py-12">
