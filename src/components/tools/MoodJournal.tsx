@@ -172,9 +172,25 @@ const MoodJournal: React.FC = () => {
                                     className="space-y-4"
                                 >
                                     {isLoading ? (
-                                        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100">
-                                            <Loader2 size={32} className="animate-spin text-teal-500 mx-auto mb-4" />
-                                            <p className="text-gray-500">Loading your entries...</p>
+                                        <div className="space-y-4" aria-busy="true" aria-label="Loading mood entries">
+                                            {[1, 2, 3].map(i => (
+                                                <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse">
+                                                    <div className="flex justify-between items-start mb-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-12 h-12 rounded-2xl bg-gray-200" />
+                                                            <div className="space-y-2">
+                                                                <div className="h-4 w-32 bg-gray-200 rounded" />
+                                                                <div className="h-3 w-20 bg-gray-100 rounded" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <div className="h-6 w-16 bg-gray-100 rounded-full" />
+                                                        <div className="h-6 w-20 bg-gray-100 rounded-full" />
+                                                        <div className="h-6 w-14 bg-gray-100 rounded-full" />
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
                                     ) : entries.length === 0 ? (
                                         <div className="bg-white rounded-3xl p-12 text-center border border-gray-100">
