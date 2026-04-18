@@ -1,9 +1,11 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, BookOpen, ArrowRight } from 'lucide-react';
 import SEO from '@/components/SEO';
 import Button from '@/components/ui/Button';
+import { SPECIALTY_TO_CATEGORY } from '@/lib/article-category-to-specialty';
+import { getCategoryBySlug } from '@/data/categories';
 import { useProviderProfile } from '@/hooks/useProviderProfile';
 import { ProfileHeader } from '@/components/providers/profile/ProfileHeader';
 import { AboutSection } from '@/components/providers/profile/AboutSection';
@@ -110,6 +112,34 @@ const ProviderProfilePage: React.FC = () => {
           <LanguageBadges provider={provider} />
           <CulturalBadges provider={provider} />
         </motion.div>
+
+        {/* Educational Resources */}
+        {topSpecialty && SPECIALTY_TO_CATEGORY[topSpecialty] && (() => {
+          const category = getCategoryBySlug(SPECIALTY_TO_CATEGORY[topSpecialty]);
+          return category ? (
+            <div className="mt-10">
+              <Link
+                to={`/learn/${category.slug}`}
+                className="flex items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-900/10 dark:to-gray-900 border border-indigo-100 dark:border-indigo-800/30 hover:border-indigo-300 dark:hover:border-indigo-600/40 transition-all group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <div>
+                    <p className="font-display font-bold text-text-primary group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Learn about {category.name.toLowerCase()}
+                    </p>
+                    <p className="text-sm text-text-secondary mt-0.5">
+                      Evidence-based articles and coping strategies
+                    </p>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="text-text-tertiary group-hover:text-indigo-500 transition-colors flex-shrink-0" />
+              </Link>
+            </div>
+          ) : null;
+        })()}
 
         {/* Find Similar Providers */}
         {topSpecialty && (
