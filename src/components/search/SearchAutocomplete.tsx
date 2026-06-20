@@ -86,13 +86,21 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
             <form onSubmit={handleSubmit} className="relative">
                 <input
                     type="search"
+                    inputMode="search"
+                    enterKeyHint="search"
                     value={query}
                     onChange={handleQueryChange}
                     placeholder={placeholder}
                     aria-label="Search articles, providers, tools, conditions, crisis resources"
                     className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-base text-text-primary placeholder-gray-400 dark:placeholder-neutral-500"
                 />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500" size={18} />
+                <button
+                    type="submit"
+                    aria-label="Submit search"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 text-gray-400 dark:text-neutral-500 hover:text-text-secondary transition-colors"
+                >
+                    <Search size={18} aria-hidden="true" />
+                </button>
                 {query && (
                     <button
                         type="button"

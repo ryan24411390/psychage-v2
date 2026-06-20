@@ -359,24 +359,36 @@ const Navigation: React.FC = () => {
                 <AnimatePresence>
                     {isSearchOpen && (
                         <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
+                            key="search-overlay"
+                            initial={{ opacity: 0, y: -8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ duration: 0.18 }}
                             className="border-t border-border bg-surface overflow-hidden relative z-40"
                         >
                             <div className="max-w-3xl mx-auto px-4 py-6">
                                 <form onSubmit={handleSearchSubmit} className="relative">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary" size={20} />
+                                    <button
+                                        type="submit"
+                                        aria-label="Submit search"
+                                        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-text-tertiary hover:text-text-primary transition-colors"
+                                    >
+                                        <Search size={20} aria-hidden="true" />
+                                    </button>
                                     <input
+                                        key="nav-search-input"
                                         ref={searchInputRef}
                                         type="search"
+                                        inputMode="search"
+                                        enterKeyHint="search"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search articles, tools, videos..."
                                         aria-label="Search articles, tools, and videos"
                                         className="w-full pl-12 pr-4 py-4 bg-surface-hover border-none rounded-2xl text-lg font-medium text-text-primary placeholder-text-tertiary focus:ring-2 focus:ring-teal-500"
                                     />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                    {/* Desktop-only close hint — meaningless on touch keyboards */}
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-2">
                                         <span className="text-xs font-bold text-text-tertiary border border-border px-2 py-1 rounded-md">ESC</span>
                                     </div>
                                 </form>
