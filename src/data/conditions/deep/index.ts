@@ -28,6 +28,7 @@ import { paraphilicDeep } from './17-paraphilic';
 import { factitiousDeep } from './18-factitious';
 import { neurocognitiveDeep } from './19-neurocognitive';
 import { perinatalDeep } from './20-perinatal';
+import { secondaryDeep } from './21-secondary';
 
 export const conditionDeepContent: ConditionDeepMap = {
     ...neurodevelopmentalDeep,
@@ -50,6 +51,7 @@ export const conditionDeepContent: ConditionDeepMap = {
     ...factitiousDeep,
     ...neurocognitiveDeep,
     ...perinatalDeep,
+    ...secondaryDeep,
 };
 
 /** Slugs that have authored deep content (for progress tracking / audits). */
