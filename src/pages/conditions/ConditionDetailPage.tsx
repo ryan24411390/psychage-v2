@@ -6,7 +6,7 @@ import { useAsyncData } from '@/hooks/useAsyncData';
 import CrisisResourceBanner from '@/components/article/CrisisResourceBanner';
 import { getConditionBySlug } from '@/services/conditionsService';
 import { articleService } from '@/services/articleService';
-import type { Condition, DefinitionField } from '@/types/condition';
+import type { Condition, DeepSection, DefinitionField } from '@/types/condition';
 import { hasDefinition } from '@/types/condition';
 import { TOP_GROUPS } from '@/config/taxonomy';
 import type { Article } from '@/types/models';
@@ -25,14 +25,22 @@ const TOP_GROUP_TITLES: Record<string, string> = Object.fromEntries(
     TOP_GROUPS.map((g) => [g.id, g.title]),
 );
 
-/** Assemble plain-text narration from the filled sections, in reading order. */
+/** Assemble plain-text narration from the filled sections + depth layer, in reading order. */
 function buildReadingText(condition: Condition): string {
     const parts = [condition.name];
     for (const { key, label } of SECTIONS) {
         const value = condition[key];
         if (value && value.trim()) parts.push(`${label}. ${value}`);
     }
+    for (const section of condition.deep_sections ?? []) {
+        if (section.body?.trim()) parts.push(`${section.heading}. ${section.body}`);
+    }
     return parts.join('. ');
+}
+
+/** Split a section body into paragraphs (blank-line separated). */
+function toParagraphs(body: string): string[] {
+    return body.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 }
 
 const ConditionDetailPage: React.FC = () => {
@@ -134,6 +142,11 @@ const ConditionDetailPage: React.FC = () => {
                         <InReviewState />
                     )}
 
+                    {/* Depth tier — the "in depth" layer, shown when authored */}
+                    {condition.deep_sections && condition.deep_sections.length > 0 && (
+                        <DeepSections name={condition.name} sections={condition.deep_sections} />
+                    )}
+
                     {/* Provenance */}
                     {condition.provenance && (
                         <p className="mt-12 text-sm text-text-tertiary">
@@ -152,6 +165,40 @@ const ConditionDetailPage: React.FC = () => {
         </>
     );
 };
+
+/**
+ * The "in depth" layer — fuller, titled sections (signs & symptoms, causes, treatment, …)
+ * below the four core fields. Each body may carry multiple blank-line-separated paragraphs.
+ */
+const DeepSections: React.FC<{ name: string; sections: DeepSection[] }> = ({ name, sections }) => (
+    <section className="mt-14 border-t border-border pt-10" aria-labelledby="cond-depth-heading">
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-accessible dark:text-teal-400">
+            In depth
+        </p>
+        <h2
+            id="cond-depth-heading"
+            className="mt-2 font-display text-2xl font-bold tracking-tight text-text-primary sm:text-3xl"
+        >
+            Understanding {name}
+        </h2>
+        <div className="mt-8 space-y-10">
+            {sections.map((section, i) => (
+                <section key={`${section.heading}-${i}`}>
+                    <h3 className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
+                        {section.heading}
+                    </h3>
+                    <div className="mt-3 space-y-4">
+                        {toParagraphs(section.body).map((para, j) => (
+                            <p key={j} className="text-lg leading-relaxed text-text-secondary">
+                                {para}
+                            </p>
+                        ))}
+                    </div>
+                </section>
+            ))}
+        </div>
+    </section>
+);
 
 /** One labelled definition section — or a calm per-field in-review note when null. */
 const Section: React.FC<{ label: string; value: string | null }> = ({ label, value }) => (
