@@ -127,8 +127,8 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Disorders due to use of alcohol',
         icd11_code: '6C40',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['alcohol use disorder', 'alcoholism', 'alcohol dependence', 'alcohol addiction', 'problem drinking', 'alcohol withdrawal'],
-        subcategoryHints: [],
+        terms: ['alcohol use disorder', 'alcoholism', 'alcohol dependence', 'alcohol addiction', 'problem drinking', 'alcohol withdrawal', 'alcohol'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-caffeine': {
         name: 'Disorders due to use of caffeine',
@@ -141,15 +141,15 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Disorders due to use of cannabis',
         icd11_code: '6C41',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['cannabis use disorder', 'cannabis dependence', 'cannabis addiction', 'marijuana addiction', 'weed addiction', 'cannabis withdrawal'],
-        subcategoryHints: [],
+        terms: ['cannabis use disorder', 'cannabis dependence', 'cannabis addiction', 'marijuana addiction', 'weed addiction', 'cannabis withdrawal', 'cannabis', 'marijuana'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-cocaine': {
         name: 'Disorders due to use of cocaine',
         icd11_code: '6C45',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['cocaine use disorder', 'cocaine dependence', 'cocaine addiction', 'crack cocaine'],
-        subcategoryHints: [],
+        terms: ['cocaine use disorder', 'cocaine dependence', 'cocaine addiction', 'crack cocaine', 'cocaine'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-dissociative-drugs': {
         name: 'Disorders due to use of dissociative drugs including ketamine and PCP',
@@ -169,7 +169,7 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Disorders due to use of MDMA or related drugs, including MDA',
         icd11_code: '6C4C',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['mdma', 'ecstasy', 'molly'],
+        terms: ['mdma', 'ecstasy'],
         subcategoryHints: [],
     },
     'disorders-due-to-use-of-multiple-specified-psychoactive-substances': {
@@ -183,15 +183,15 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Disorders due to use of nicotine',
         icd11_code: '6C4A',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['nicotine addiction', 'nicotine dependence', 'smoking addiction', 'tobacco addiction', 'vaping addiction', 'quitting smoking'],
-        subcategoryHints: [],
+        terms: ['nicotine addiction', 'nicotine dependence', 'smoking addiction', 'tobacco addiction', 'vaping addiction', 'quit smoking', 'quitting smoking', 'smoking cessation', 'stop smoking', 'nicotine', 'tobacco'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-opioids': {
         name: 'Disorders due to use of opioids',
         icd11_code: '6C43',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['opioid use disorder', 'opioid addiction', 'opioid dependence', 'heroin addiction', 'opioid withdrawal', 'painkiller addiction'],
-        subcategoryHints: [],
+        terms: ['opioid use disorder', 'opioid addiction', 'opioid dependence', 'heroin addiction', 'opioid withdrawal', 'painkiller addiction', 'opioid', 'heroin', 'fentanyl'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-other-specified-psychoactive-substances': {
         name: 'Disorders due to use of other specified psychoactive substances, including medications',
@@ -204,15 +204,15 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Disorders due to use of sedatives, hypnotics or anxiolytics',
         icd11_code: '6C44',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['benzodiazepine dependence', 'benzodiazepine addiction', 'benzo addiction', 'sedative use disorder', 'sleeping pill dependence'],
-        subcategoryHints: [],
+        terms: ['benzodiazepine dependence', 'benzodiazepine addiction', 'benzo addiction', 'sedative use disorder', 'sleeping pill dependence', 'benzodiazepine'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-stimulants-including-amphetamines': {
         name: 'Disorders due to use of stimulants including amphetamines, methamphetamine or methcathinone',
         icd11_code: '6C46',
         icd11_grouping: 'Disorders due to substance use or addictive behaviours',
-        terms: ['methamphetamine', 'amphetamine addiction', 'stimulant use disorder', 'meth addiction'],
-        subcategoryHints: [],
+        terms: ['methamphetamine', 'amphetamine addiction', 'stimulant use disorder', 'meth addiction', 'amphetamine'],
+        subcategoryHints: ['Substance Use & Addiction'],
     },
     'disorders-due-to-use-of-synthetic-cannabinoids': {
         name: 'Disorders due to use of synthetic cannabinoids',
@@ -787,7 +787,10 @@ export const CONDITION_TERMS: Record<string, ConditionTermEntry> = {
         name: 'Schizophrenia',
         icd11_code: '6A20',
         icd11_grouping: 'Schizophrenia or other primary psychotic disorders',
-        terms: ['schizophrenia', 'schizophrenic', 'psychosis', 'psychotic', 'hallucinations', 'delusions', 'hearing voices'],
+        // Bare "psychosis"/"psychotic"/"hallucinations" are NOT schizophrenia-specific —
+        // they bleed across the whole psychotic family and into passing mentions. Keep
+        // only schizophrenia-specific surface forms; the subcategory hints carry family context.
+        terms: ['schizophrenia', 'schizophrenic'],
         subcategoryHints: ['Schizophrenia', 'Understanding Psychosis', 'Supporting Someone With Psychosis', 'Treatment for Psychotic Conditions', 'Psychosis Research and Emerging Approaches'],
     },
     'schizotypal-disorder': {
