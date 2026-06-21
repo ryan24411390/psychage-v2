@@ -24,6 +24,7 @@ import { addictiveBehavioursDeep } from './13-addictive-behaviours';
 import { impulseControlDeep } from './14-impulse-control';
 import { disruptiveDeep } from './15-disruptive';
 import { personalityDeep } from './16-personality';
+import { paraphilicDeep } from './17-paraphilic';
 
 export const conditionDeepContent: ConditionDeepMap = {
     ...neurodevelopmentalDeep,
@@ -42,6 +43,7 @@ export const conditionDeepContent: ConditionDeepMap = {
     ...impulseControlDeep,
     ...disruptiveDeep,
     ...personalityDeep,
+    ...paraphilicDeep,
 };
 
 /** Slugs that have authored deep content (for progress tracking / audits). */
