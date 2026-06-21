@@ -19,6 +19,7 @@ import { dissociativeDeep } from './08-dissociative';
 import { eatingDeep } from './09-eating';
 import { eliminationDeep } from './10-elimination';
 import { bodilyDistressDeep } from './11-bodily-distress';
+import { substanceUseDeep } from './12-substance-use';
 
 export const conditionDeepContent: ConditionDeepMap = {
     ...neurodevelopmentalDeep,
@@ -32,6 +33,7 @@ export const conditionDeepContent: ConditionDeepMap = {
     ...eatingDeep,
     ...eliminationDeep,
     ...bodilyDistressDeep,
+    ...substanceUseDeep,
 };
 
 /** Slugs that have authored deep content (for progress tracking / audits). */
