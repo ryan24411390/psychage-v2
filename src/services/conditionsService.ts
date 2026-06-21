@@ -21,7 +21,7 @@
  */
 
 import { supabase } from '@/lib/supabaseClient';
-import type { Condition, DeepSection } from '@/types/condition';
+import type { Condition, ConditionSource, DeepSection } from '@/types/condition';
 import { conditionsTaxonomy } from '@/data/conditions/taxonomy';
 import { icd11GroupingToTopGroup } from '@/data/conditions/taxonomyGroup';
 
@@ -32,8 +32,8 @@ const BASE_TABLE = 'conditions_reference';
 
 const COLUMNS =
     'id, slug, name, icd11_code, icd11_grouping, short_definition, what_it_feels_like, how_it_differs, when_more_than_everyday, crisis_flag, provenance, verification_status, reading_level';
-/** Detail query also pulls the heavier deep_sections payload (skipped on the A–Z list). */
-const DETAIL_COLUMNS = `${COLUMNS}, deep_sections`;
+/** Detail query also pulls the heavier deep_sections + sources (skipped on the A–Z list). */
+const DETAIL_COLUMNS = `${COLUMNS}, deep_sections, sources`;
 
 interface ConditionRow {
     id?: string;
@@ -48,6 +48,7 @@ interface ConditionRow {
     how_it_differs: string | null;
     when_more_than_everyday: string | null;
     deep_sections?: DeepSection[] | null;
+    sources?: ConditionSource[] | null;
     crisis_flag: boolean | null;
     provenance: string | null;
     verification_status: string | null;
@@ -69,6 +70,7 @@ function mapRow(row: ConditionRow): Condition {
         how_it_differs: row.how_it_differs ?? null,
         when_more_than_everyday: row.when_more_than_everyday ?? null,
         deep_sections: Array.isArray(row.deep_sections) ? row.deep_sections : null,
+        sources: Array.isArray(row.sources) ? row.sources : null,
         crisis_flag: Boolean(row.crisis_flag),
         provenance: row.provenance ?? null,
         verification_status:

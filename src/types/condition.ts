@@ -22,6 +22,12 @@ export interface DeepSection {
     body: string;
 }
 
+/** A reputable reference for a condition's content (WHO ICD-11, NHS, NIMH, …). */
+export interface ConditionSource {
+    label: string;
+    url: string;
+}
+
 /**
  * A condition row as stored / fetched. Snake_case mirrors the Supabase columns so
  * rows can be used directly without remapping.
@@ -56,6 +62,8 @@ export interface Condition {
      * exist. Gated with the definition (masked until verified).
      */
     deep_sections?: DeepSection[] | null;
+    /** Optional reputable references backing the deeper content. Gated until verified. */
+    sources?: ConditionSource[] | null;
     /**
      * Clinical decision left for review — never set during authoring. Surfaces crisis
      * support prominently when true.

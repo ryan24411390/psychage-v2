@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { useAsyncData } from '@/hooks/useAsyncData';
 import CrisisResourceBanner from '@/components/article/CrisisResourceBanner';
 import { getConditionBySlug } from '@/services/conditionsService';
 import { articleService } from '@/services/articleService';
-import type { Condition, DeepSection, DefinitionField } from '@/types/condition';
+import type { Condition, ConditionSource, DeepSection, DefinitionField } from '@/types/condition';
 import { hasDefinition } from '@/types/condition';
 import { TOP_GROUPS } from '@/config/taxonomy';
 import type { Article } from '@/types/models';
@@ -147,10 +147,15 @@ const ConditionDetailPage: React.FC = () => {
                         <DeepSections name={condition.name} sections={condition.deep_sections} />
                     )}
 
+                    {/* Sources — reputable references backing the deeper content */}
+                    {condition.sources && condition.sources.length > 0 && (
+                        <SourcesList sources={condition.sources} />
+                    )}
+
                     {/* Provenance */}
                     {condition.provenance && (
                         <p className="mt-12 text-sm text-text-tertiary">
-                            Source: {condition.provenance}
+                            Classification: {condition.provenance}
                         </p>
                     )}
 
@@ -197,6 +202,35 @@ const DeepSections: React.FC<{ name: string; sections: DeepSection[] }> = ({ nam
                 </section>
             ))}
         </div>
+    </section>
+);
+
+/** Reputable references backing the deeper content, rendered as outbound links. */
+const SourcesList: React.FC<{ sources: ConditionSource[] }> = ({ sources }) => (
+    <section className="mt-14 border-t border-border pt-8" aria-labelledby="cond-sources-heading">
+        <h2
+            id="cond-sources-heading"
+            className="font-display text-lg font-semibold text-text-primary"
+        >
+            Sources
+        </h2>
+        <ul className="mt-4 space-y-2.5">
+            {sources.map((source, i) => (
+                <li key={`${source.url}-${i}`}>
+                    <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-start gap-1.5 text-sm text-text-secondary transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
+                    >
+                        <span className="underline decoration-border underline-offset-2 group-hover:decoration-primary">
+                            {source.label}
+                        </span>
+                        <ExternalLink size={13} aria-hidden="true" className="mt-0.5 shrink-0 opacity-60" />
+                    </a>
+                </li>
+            ))}
+        </ul>
     </section>
 );
 
