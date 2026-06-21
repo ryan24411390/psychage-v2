@@ -9,9 +9,11 @@
 
 import type { ConditionDeepMap } from './types';
 import { neurodevelopmentalDeep } from './01-neurodevelopmental';
+import { psychoticDeep } from './02-psychotic';
 
 export const conditionDeepContent: ConditionDeepMap = {
     ...neurodevelopmentalDeep,
+    ...psychoticDeep,
 };
 
 /** Slugs that have authored deep content (for progress tracking / audits). */
