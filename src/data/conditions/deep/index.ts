@@ -12,12 +12,14 @@ import { neurodevelopmentalDeep } from './01-neurodevelopmental';
 import { psychoticDeep } from './02-psychotic';
 import { catatoniaDeep } from './03-catatonia';
 import { moodDeep } from './04-mood';
+import { anxietyDeep } from './05-anxiety';
 
 export const conditionDeepContent: ConditionDeepMap = {
     ...neurodevelopmentalDeep,
     ...psychoticDeep,
     ...catatoniaDeep,
     ...moodDeep,
+    ...anxietyDeep,
 };
 
 /** Slugs that have authored deep content (for progress tracking / audits). */
