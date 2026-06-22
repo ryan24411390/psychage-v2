@@ -33,7 +33,7 @@ export const MobileHomeHero: React.FC<MobileHomeHeroProps> = ({ article, onClick
             )}
         >
             {poster ? (
-                <div className="relative aspect-[3/2] w-full overflow-hidden bg-surface-hover">
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface-hover">
                     <img src={poster} alt="" className="h-full w-full object-cover" />
                     {/* Bottom scrim so the title stays legible over any poster. */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -43,7 +43,7 @@ export const MobileHomeHero: React.FC<MobileHomeHeroProps> = ({ article, onClick
                                 {category}
                             </span>
                         ) : null}
-                        <h2 className="font-display text-2xl font-semibold leading-tight text-white line-clamp-3">
+                        <h2 className="font-display text-2xl font-semibold leading-tight text-white line-clamp-2">
                             {article.title}
                         </h2>
                         {hasReadTime ? (
@@ -87,7 +87,7 @@ export const MobileHomeHeroSkeleton: React.FC<{ className?: string }> = ({ class
         className={cn('overflow-hidden rounded-2xl border border-border bg-surface', className)}
         aria-hidden
     >
-        <div className="aspect-[3/2] w-full animate-pulse bg-surface-hover" />
+        <div className="aspect-[16/9] w-full animate-pulse bg-surface-hover" />
     </div>
 );
 
