@@ -27,6 +27,7 @@ import { ScrollManager } from './components/ui/ScrollManager';
 // Mobile (≤639px) foundation chrome — phone-only, desktop frozen.
 import MobileCrisisHeader from './components/mobile/MobileCrisisHeader';
 import MobileBottomNav from './components/mobile/MobileBottomNav';
+import MobileFooter from './components/mobile/MobileFooter';
 import ResponsiveRoute from './components/mobile/ResponsiveRoute';
 import { useMediaQuery, MOBILE_NARROW_QUERY } from './hooks/useMediaQuery';
 
@@ -39,6 +40,8 @@ const MobileBrowse = React.lazy(() => import('./components/mobile/screens/Mobile
 const MobileCategory = React.lazy(() => import('./components/mobile/screens/MobileCategory'));
 const MobileReader = React.lazy(() => import('./components/mobile/screens/MobileReader'));
 const MobileSearch = React.lazy(() => import('./components/mobile/screens/MobileSearch'));
+const MobileTools = React.lazy(() => import('./components/mobile/screens/MobileTools'));
+const MobileProviders = React.lazy(() => import('./components/mobile/screens/MobileProviders'));
 const ArticleCategoryPage = React.lazy(() => import('./pages/ArticleCategoryPage'));
 const ArticlePage = React.lazy(() => import('./pages/learn/ArticlePage'));
 const ArticleRedirect = React.lazy(() => import('./components/article/ArticleRedirect'));
@@ -262,7 +265,7 @@ const App: React.FC = () => {
                                             <Route path="/conditions/:slug" element={<PageTransition><RouteErrorBoundary><ConditionDetailPage /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/watch/:id" element={<PageTransition><VideoDetail /></PageTransition>} />
                                             {/* Provider Directory V2 */}
-                                            <Route path="/providers" element={<PageTransition><ProvidersLandingPage /></PageTransition>} />
+                                            <Route path="/providers" element={<PageTransition><RouteErrorBoundary><ResponsiveRoute mobile={<MobileProviders />} desktop={<ProvidersLandingPage />} /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/providers/search" element={<PageTransition><RouteErrorBoundary><ProviderSearchPage /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/providers/:id" element={<PageTransition><ProviderProfilePage /></PageTransition>} />
                                             <Route path="/how-we-verify" element={<PageTransition><HowWeVerifyPage /></PageTransition>} />
@@ -273,7 +276,7 @@ const App: React.FC = () => {
                                             {/* Legacy provider redirects */}
                                             <Route path="/find-care" element={<Navigate to="/providers" replace />} />
                                             <Route path="/find-care/provider/:id" element={<LegacyProviderRedirect />} />
-                                            <Route path="/tools" element={<PageTransition><RouteErrorBoundary><ToolsPage /></RouteErrorBoundary></PageTransition>} />
+                                            <Route path="/tools" element={<PageTransition><RouteErrorBoundary><ResponsiveRoute mobile={<MobileTools />} desktop={<ToolsPage />} /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/toolkits" element={<PageTransition><RouteErrorBoundary><ToolkitsIndexPage /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/toolkits/:id" element={<PageTransition><RouteErrorBoundary><ToolkitDetailPage /></RouteErrorBoundary></PageTransition>} />
                                             <Route path="/tools/mood-journal" element={<PageTransition><MoodJournal /></PageTransition>} />
@@ -410,6 +413,8 @@ const App: React.FC = () => {
                                     </Suspense>
                                 </ErrorBoundary>
                             </main>
+
+                            {isPhone && location.pathname !== '/tools/mindmate' && !location.pathname.startsWith('/dashboard') && !location.pathname.startsWith('/portal') && location.pathname !== '/onboarding' && <MobileFooter />}
 
                             {isPhone && <MobileBottomNav />}
 

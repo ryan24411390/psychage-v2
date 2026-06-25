@@ -1,21 +1,27 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Compass, Search, Sparkles } from 'lucide-react';
-import { ArticleRowCard, ArticleRowCardSkeleton } from '@/components/mobile/cards/ArticleRowCard';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Compass, Search, Sparkles, Stethoscope, Wrench } from 'lucide-react';
+import { ArticleRowCard } from '@/components/mobile/cards/ArticleRowCard';
 import { CategoryCard, CategoryCardSkeleton } from '@/components/mobile/cards/CategoryCard';
 import { MobileHomeHero, MobileHomeHeroSkeleton } from '@/components/mobile/screens/MobileHomeHero';
+import { MobileHomeStartHere } from '@/components/mobile/screens/MobileHomeStartHere';
 import { getRecentlyReadIds } from '@/components/articles/recentlyRead';
 import { useAuth } from '@/context/AuthContext';
 import { useCategoryData } from '@/hooks/useCategoryData';
 import { useHomepageArticles } from '@/hooks/useHomepageArticles';
 import { articleService } from '@/services/articleService';
-import type { Article } from '@/types/models';
+import { toolService } from '@/services/toolService';
+import { MobileToolCard } from '@/components/mobile/cards/MobileToolCard';
+import { isComingSoon } from '@/components/mobile/cards/toolLinks';
+import type { Article, Tool } from '@/types/models';
 
 /**
- * Mobile Home (route `/`). Directory-first but designed: a warm greeting, a
- * curated Featured hero (the richness element), then a prominent "Browse all
- * topics" entry — intent before feed — followed by a Symptom Navigator CTA,
- * poster-backed topic collections, and editorial rails.
+ * Mobile Home (route `/`). The navigational center of the site: scroll it
+ * top-to-bottom and you can reach every major area. A first-run "Start here"
+ * orientation (which subsumes the old welcome band) leads, then a curated
+ * Featured hero (the richness element), the primary hub entries — Browse the
+ * library, Search, Symptom Navigator, Tools, Find Care — and finally
+ * poster-backed topic collections and editorial rails.
  *
  * Foundation wraps this screen in the crisis header + bottom nav, so we render
  * only the scroll body and own the `px-4 py-6` padding. Cards + skeletons, the
@@ -35,6 +41,27 @@ const MobileHome: React.FC = () => {
     const { hero, rest, isLoading: articlesLoading } = useHomepageArticles(EDITORS_PICK_LIMIT);
     // Poster-backed topic collections.
     const { categories, isLoading: categoriesLoading } = useCategoryData();
+
+    // Tools preview (#85) — first few launchable tools; full hub one tap away.
+    const [toolsPreview, setToolsPreview] = useState<Tool[]>([]);
+    const [toolsLoading, setToolsLoading] = useState(true);
+    useEffect(() => {
+        let cancelled = false;
+        toolService
+            .getAll()
+            .then((data) => {
+                if (!cancelled) setToolsPreview(data.filter((t) => !isComingSoon(t.id)).slice(0, 4));
+            })
+            .catch((err) => {
+                console.warn('[MobileHome] Failed to fetch tools:', err);
+            })
+            .finally(() => {
+                if (!cancelled) setToolsLoading(false);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     // Separate pool for Continue Reading — resolve recently-read IDs locally.
     const [pool, setPool] = useState<Article[]>([]);
@@ -82,11 +109,9 @@ const MobileHome: React.FC = () => {
 
     return (
         <div className="px-4 py-6">
-            {/* Greeting */}
-            <h1 className="font-display text-2xl font-semibold text-text-primary">{greeting}</h1>
-            <p className="mt-1 text-sm text-text-secondary">
-                Find calm, clear mental health information.
-            </p>
+            {/* First-run "Start here" — the single welcome element (subsumes the
+                old greeting band). Collapses to a slim entry once seen. */}
+            <MobileHomeStartHere greeting={greeting} />
 
             {/* Featured hero — the primary richness element */}
             {articlesLoading ? (
@@ -141,15 +166,66 @@ const MobileHome: React.FC = () => {
                 <ArrowRight className="h-5 w-5 shrink-0 text-text-tertiary" aria-hidden />
             </button>
 
+            {/* Tools — 2-col preview grid (#85); full hub one tap away via "See all" */}
+            <section className="mt-6">
+                <div className="mb-3 flex items-center justify-between">
+                    <h2 className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-text-tertiary">
+                        <Wrench className="h-4 w-4" aria-hidden />
+                        Tools
+                    </h2>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/tools')}
+                        className="inline-flex min-h-touch items-center gap-1 text-sm font-semibold text-primary"
+                    >
+                        See all
+                        <ArrowRight className="h-4 w-4" aria-hidden />
+                    </button>
+                </div>
+                {toolsLoading ? (
+                    <div className="grid grid-cols-2 gap-3" aria-hidden>
+                        {Array.from({ length: 4 }).map((_, i) => (
+                            <div key={i} className="h-40 animate-pulse rounded-3xl bg-surface-hover" />
+                        ))}
+                    </div>
+                ) : toolsPreview.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-3">
+                        {toolsPreview.map((tool) => (
+                            <MobileToolCard key={tool.id} tool={tool} />
+                        ))}
+                    </div>
+                ) : null}
+            </section>
+
+            {/* Find Care — make the provider directory reachable by scrolling Home */}
+            <button
+                type="button"
+                onClick={() => navigate('/providers')}
+                className="mt-3 flex min-h-[44px] w-full items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-4 text-left transition-colors duration-200 hover:bg-surface-hover active:bg-surface-hover"
+            >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-hover text-text-secondary">
+                    <Stethoscope className="h-5 w-5" aria-hidden />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="font-display text-base font-semibold leading-snug text-text-primary">
+                        Find Care
+                    </span>
+                    <span className="text-xs text-text-secondary">
+                        Browse mental health providers.
+                    </span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-text-tertiary" aria-hidden />
+            </button>
+
             {/* Topic collections — poster-backed category cards */}
             {categoriesLoading ? (
                 <section className="mt-8">
                     <h2 className="mb-3 text-xs font-medium uppercase tracking-wide text-text-tertiary">
                         Topic collections
                     </h2>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         {Array.from({ length: COLLECTIONS_LIMIT }).map((_, i) => (
-                            <CategoryCardSkeleton key={i} />
+                            <CategoryCardSkeleton key={i} className="w-40 shrink-0" />
                         ))}
                     </div>
                 </section>
@@ -158,9 +234,13 @@ const MobileHome: React.FC = () => {
                     <h2 className="mb-3 text-xs font-medium uppercase tracking-wide text-text-tertiary">
                         Topic collections
                     </h2>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         {collections.map((category) => (
-                            <CategoryCard key={category.slug} category={category} />
+                            <CategoryCard
+                                key={category.slug}
+                                category={category}
+                                className="w-40 shrink-0 snap-start"
+                            />
                         ))}
                     </div>
                 </section>
@@ -180,15 +260,19 @@ const MobileHome: React.FC = () => {
                 </section>
             )}
 
-            {/* Editor's Pick — category-diversified rail */}
+            {/* Editor's Pick — category-diversified rail, compact 2-col image-only grid */}
             {articlesLoading ? (
                 <section className="mt-8">
                     <h2 className="mb-2 text-xs font-medium uppercase tracking-wide text-text-tertiary">
                         Editor&rsquo;s Pick
                     </h2>
-                    <div className="flex flex-col gap-1">
-                        {Array.from({ length: 4 }).map((_, i) => (
-                            <ArticleRowCardSkeleton key={i} />
+                    <div className="grid grid-cols-2 gap-3">
+                        {Array.from({ length: EDITORS_PICK_LIMIT }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="aspect-[16/9] animate-pulse rounded-xl bg-surface-hover"
+                                aria-hidden
+                            />
                         ))}
                     </div>
                 </section>
@@ -197,9 +281,23 @@ const MobileHome: React.FC = () => {
                     <h2 className="mb-2 text-xs font-medium uppercase tracking-wide text-text-tertiary">
                         Editor&rsquo;s Pick
                     </h2>
-                    <div className="flex flex-col gap-1">
-                        {rest.map((article) => (
-                            <ArticleRowCard key={article.id} article={article} />
+                    <div className="grid grid-cols-2 gap-3">
+                        {rest.slice(0, EDITORS_PICK_LIMIT).map((article) => (
+                            <Link
+                                key={article.id}
+                                to={`/learn/${article.category.slug}/${article.slug}`}
+                                aria-label={article.title}
+                                className="group relative block aspect-[16/9] overflow-hidden rounded-xl bg-surface-hover transition-opacity duration-200 hover:opacity-90 active:opacity-90"
+                            >
+                                {article.image ? (
+                                    <img
+                                        src={article.image}
+                                        alt=""
+                                        loading="lazy"
+                                        className="h-full w-full object-cover"
+                                    />
+                                ) : null}
+                            </Link>
                         ))}
                     </div>
                 </section>
