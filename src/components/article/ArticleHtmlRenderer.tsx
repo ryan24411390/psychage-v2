@@ -27,6 +27,31 @@ function ArticleHtmlRenderer({ html, className }: { html: string; className?: st
     // Lazy-load inline images
     const images = containerRef.current.querySelectorAll('img:not([loading])');
     images.forEach((img) => img.setAttribute('loading', 'lazy'));
+
+    // Collapse dead chart husks: empty `.recharts-responsive-container` shells left
+    // in the stored HTML by older static-render seeding, for which no chart data was
+    // ever authored (so they can't be hydrated and would otherwise show a blank box).
+    // A hydrated chart's container lives INSIDE a [data-chart-block] mount, so it is
+    // excluded — this only hides genuinely-orphaned husks, never a live chart.
+    const huskContainers = containerRef.current.querySelectorAll<HTMLElement>('.recharts-responsive-container:empty');
+    huskContainers.forEach((el) => {
+      if (el.closest('[data-chart-block]')) return; // live chart mount — leave it
+      // Hide the fixed-height wrapper so no empty rectangle remains; the chart
+      // card's heading + source caption (real text) stay visible.
+      (el.parentElement ?? el).style.display = 'none';
+    });
+
+    // Reveal scroll-animation wrappers: stored article HTML bakes a Framer-Motion-style
+    // reveal INITIAL state (opacity:0 + translateX/Y) into block wrappers. The static reader
+    // renders raw HTML with no reveal driver, so these would stay invisible — tables/cards/
+    // charts show as blank gaps. Clear the inline opacity/transform so the blocks are visible.
+    const revealWrappers = containerRef.current.querySelectorAll<HTMLElement>('[style*="opacity"]');
+    revealWrappers.forEach((el) => {
+      if (parseFloat(el.style.opacity) === 0) {
+        el.style.opacity = '';
+        el.style.transform = '';
+      }
+    });
   }, [html]);
 
   // Hydrate chart blocks embedded as data attributes

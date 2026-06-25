@@ -10,6 +10,7 @@ import { Article, Category, Citation } from '../types/models';
 import { supabase } from '../lib/supabaseClient';
 import { useMemo } from 'react';
 import { getCategoryTheme } from '../config/categoryThemes';
+import { resolveCanonicalSlug, slugsForCanonical } from '../config/taxonomy';
 
 // Lazy-loaded mock articles — only fetched when Supabase fails or JSX content is needed.
 // This avoids pulling ~30MB of article TSX into the main bundle at load time.
@@ -251,7 +252,16 @@ export const articleService = {
                     .order('id', { ascending: true }) // stable tiebreaker across pages
                     .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
                 if (params?.featured) query = query.eq('featured', true);
-                if (params?.category) query = query.eq('category.slug', params.category);
+                if (params?.category) {
+                    // DB rows are tagged with legacy category slugs (e.g.
+                    // 'trauma-ptsd') while routes use canonical slugs
+                    // ('trauma-healing'). Match every slug that folds onto the
+                    // canonical so the page isn't missing content.
+                    const slugs = slugsForCanonical(params.category);
+                    query = slugs.length > 1
+                        ? query.in('category.slug', slugs)
+                        : query.eq('category.slug', params.category);
+                }
 
                 const { data, error } = await query;
                 if (error) throw error;
@@ -289,7 +299,10 @@ export const articleService = {
             image: resolveImageUrl(a.image),
             _source: 'mock' as const,
         }));
-        if (params?.category) mockResult = mockResult.filter(a => a.category.slug === params.category);
+        if (params?.category) {
+            const canonical = resolveCanonicalSlug(params.category);
+            mockResult = mockResult.filter(a => resolveCanonicalSlug(a.category.slug) === canonical);
+        }
         if (params?.featured) mockResult = mockResult.filter(a => a.featured);
         return mockResult;
     },
@@ -307,6 +320,87 @@ export const articleService = {
             citations: [],
             relatedArticles: [],
         }));
+    },
+
+    /**
+     * Paginated published-article listing for infinite-scroll views (mobile
+     * Browse → "All articles"). Same projection, filters, and stable sort as
+     * `getAll`, but returns one page at a time so callers never pull the whole
+     * corpus. Supabase is authoritative; the mock corpus is only the offline /
+     * empty-DB fallback.
+     */
+    getPage: async (
+        params?: { category?: string; featured?: boolean; page?: number; limit?: number },
+    ): Promise<{ articles: ArticleWithContent[]; page: number; hasMore: boolean }> => {
+        const page = Math.max(0, params?.page ?? 0);
+        const limit = Math.max(1, params?.limit ?? 20);
+
+        // Same list-view projection / join as getAll.
+        const listFields = 'id, slug, title, seo_description, hero_image_url, category_id, read_time, status, created_at, featured, tags';
+        const selectString = params?.category
+            ? `${listFields}, category:article_categories!category_id!inner(id, name, slug, description)`
+            : `${listFields}, category:article_categories!category_id(id, name, slug, description)`;
+
+        // Fetch limit+1 rows so `hasMore` is known without a separate count query.
+        // `.range` is inclusive, so [start, start+limit] asks for limit+1 rows.
+        const fetchPage = async (): Promise<DBArticle[]> => {
+            let query = supabase.from('articles').select(selectString)
+                .eq('status', 'published')
+                .not('content', 'is', null)
+                .neq('content', '')
+                .order('created_at', { ascending: false })
+                .order('id', { ascending: true }) // stable tiebreaker across pages
+                .range(page * limit, page * limit + limit);
+            if (params?.featured) query = query.eq('featured', true);
+            if (params?.category) {
+                // Match legacy + canonical slugs so a canonical category page
+                // isn't missing rows still tagged with the old slug.
+                const slugs = slugsForCanonical(params.category);
+                query = slugs.length > 1
+                    ? query.in('category.slug', slugs)
+                    : query.eq('category.slug', params.category);
+            }
+            const { data, error } = await query;
+            if (error) throw error;
+            return (data ?? []) as unknown as DBArticle[];
+        };
+
+        // Supabase first, retrying transient failures before any mock fallback.
+        // `rows === null` means unreachable after retries (offline path).
+        let rows: DBArticle[] | null = null;
+        for (let attempt = 0; attempt < 3; attempt++) {
+            try {
+                rows = await fetchPage();
+                break;
+            } catch {
+                if (attempt < 2) await new Promise((r) => setTimeout(r, 300 * (attempt + 1)));
+            }
+        }
+
+        if (rows !== null && rows.length > 0) {
+            const hasMore = rows.length > limit;
+            return { articles: rows.slice(0, limit).map(mapSupabaseToArticle), page, hasMore };
+        }
+        // Reachable Supabase returned an empty page past the corpus end (page > 0):
+        // stop here rather than injecting mock cards after real ones.
+        if (rows !== null && page > 0) {
+            return { articles: [], page, hasMore: false };
+        }
+
+        // page 0 empty, or Supabase unreachable on any page → slice the mock corpus.
+        const publishedMock = await getMockArticles();
+        let mockAll = publishedMock.map(a => ({
+            ...a,
+            image: resolveImageUrl(a.image),
+            _source: 'mock' as const,
+        }));
+        if (params?.category) {
+            const canonical = resolveCanonicalSlug(params.category);
+            mockAll = mockAll.filter(a => resolveCanonicalSlug(a.category.slug) === canonical);
+        }
+        if (params?.featured) mockAll = mockAll.filter(a => a.featured);
+        const start = page * limit;
+        return { articles: mockAll.slice(start, start + limit), page, hasMore: start + limit < mockAll.length };
     },
 
     /**
