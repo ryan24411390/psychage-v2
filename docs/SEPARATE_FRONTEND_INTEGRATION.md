@@ -108,19 +108,19 @@ Create `main_backend/.env.local`:
 # ============================================================================
 NEXT_PUBLIC_SUPABASE_URL=https://ozourhqyqtpppvpbhphw.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96b3VyaHF5cXRwcHB2cGJocGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTc3NDQsImV4cCI6MjA3ODg5Mzc0NH0.frxFMgcvbXKJBmiRPboGPPyL57P_qJ30wYueoAspKR0
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_5E4KRGhF8MInskH5xYZnYg_cLdy3giw
+SUPABASE_SERVICE_ROLE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY>   # server-only secret — NEVER commit a real value
 
 # ============================================================================
 # SANITY.IO (Content Management System)
 # ============================================================================
 NEXT_PUBLIC_SANITY_PROJECT_ID=w1sh63w6
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=skMc7aKLhvegBBz2UXnTZPYt6oK3jXiMWVYNPBg2dVZk83XBmbuyqxqV0dXsXUPb1yc1Zz8TEYNzl1P0bYZhmAqYFOo5tKDpmwm6pinhBUrceoHae7AWs6pi0o6mkUws11vGXetmN8h4xUpyfGqQK2Ssh8yD7DQqT5E7v9KrAIeNpatUleDp
+SANITY_API_TOKEN=<YOUR_SANITY_API_TOKEN>   # server-only secret — NEVER commit a real value
 
 # ============================================================================
 # GEMINI AI (Symptom Checker)
 # ============================================================================
-NEXT_PUBLIC_GEMINI_API_KEY=AIzaSyAFnxpTZN2kWOJ9A-L4C9PPkJ5BHxkomCA
+NEXT_PUBLIC_GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>   # billable — keep out of version control
 
 # ============================================================================
 # APPLICATION URLs - IMPORTANT: Update FRONTEND_URL for your new frontend!
@@ -1193,7 +1193,7 @@ Anon Key (safe for frontend):
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96b3VyaHF5cXRwcHB2cGJocGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMTc3NDQsImV4cCI6MjA3ODg5Mzc0NH0.frxFMgcvbXKJBmiRPboGPPyL57P_qJ30wYueoAspKR0
 
 Service Role Key (BACKEND ONLY - NEVER EXPOSE):
-sb_secret_5E4KRGhF8MInskH5xYZnYg_cLdy3giw
+<YOUR_SUPABASE_SERVICE_ROLE_KEY>
 ```
 
 ### Sanity CMS (Content)
@@ -1204,13 +1204,13 @@ Dataset: production
 Dashboard: https://www.sanity.io/manage/personal/project/w1sh63w6
 
 API Token (BACKEND ONLY):
-skMc7aKLhvegBBz2UXnTZPYt6oK3jXiMWVYNPBg2dVZk83XBmbuyqxqV0dXsXUPb1yc1Zz8TEYNzl1P0bYZhmAqYFOo5tKDpmwm6pinhBUrceoHae7AWs6pi0o6mkUws11vGXetmN8h4xUpyfGqQK2Ssh8yD7DQqT5E7v9KrAIeNpatUleDp
+<YOUR_SANITY_API_TOKEN>
 ```
 
 ### Google Gemini (AI)
 
 ```
-API Key: AIzaSyAFnxpTZN2kWOJ9A-L4C9PPkJ5BHxkomCA
+API Key: <YOUR_GEMINI_API_KEY>
 Console: https://aistudio.google.com/app/apikey
 ```
 
@@ -1307,11 +1307,11 @@ npx vercel
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://ozourhqyqtpppvpbhphw.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
+SUPABASE_SERVICE_ROLE_KEY=<YOUR_SUPABASE_SERVICE_ROLE_KEY>
 NEXT_PUBLIC_SANITY_PROJECT_ID=w1sh63w6
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=skMc7a...
-NEXT_PUBLIC_GEMINI_API_KEY=AIzaSy...
+SANITY_API_TOKEN=<YOUR_SANITY_API_TOKEN>
+NEXT_PUBLIC_GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
 NEXT_PUBLIC_BASE_URL=https://your-backend.vercel.app
 FRONTEND_URL=https://your-frontend.vercel.app
 ```
